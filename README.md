@@ -2,7 +2,7 @@
 
 Welcome to NYmag's first dose of data analytics!
 
-Grok /ˈɡrɒk/ is a term that roughly means "to understand profoundly/have knowledge of". It was coined by Robert Heinlein in his science-fiction novel Stranger in a Strange Land.
+Grok /ˈɡrɒk/ is a term that roughly means "to understand profoundly/have knowledge of". It was coined by Robert Heinlein in his science-fiction novel *Stranger in a Strange Land*.
 
 Grok uses sentiment analysis techniques to characterize the sentiment of text units. In this case, Grok parses through NYmag's article content and expresses articles as having positive, negative, or neutral sentiment. It then matches them against article pageviews, e.g. "Article 2007/07/the_entourage_guiltpleasure_in_3.html has 100 pageviews and rates as 90% positive".
 
