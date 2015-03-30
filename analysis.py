@@ -16,7 +16,7 @@ def get_article_body(article):
         if len(keys) > 0 and 'entry' in keys[0]:
             entry = text[keys[0]]
             entry_text = entry.get('entrytext')
-        return entry_text
+        return strip_html(entry_text)
     return ''
 
 for entry_text in articles.find():
