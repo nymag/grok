@@ -10,29 +10,21 @@ def strip_html(html):
     return ''.join(BeautifulSoup(html).findAll(text=True))
 
 def get_article_body(article):
-    #some articles don't have bodies 
-    if 'body' not in article:
-        return ''
-    #body is an array and entry and entryText exist within it
-    for text in article['body']:
-       if 'entry' in text:
-        #lowercase dictionary: some articles use either entryText or entrytext
-        lowercase_dict = {}
-        for key, value in text['entry'].iteritems(): 
-                lowercase_dict[key.lower()] = value            
-        return lowercase_dict['entrytext']
+    #body is an array and entrytext exists within it
+    for text in article.get('body') or []:
+        keys = text.keys()
+        if len(keys) > 0 and 'entry' in keys[0]:
+            entry = text[keys[0]]
+            entry_text = entry.get('entrytext')
+        return entry_text
     return ''
 
-for entry in articles.find():
+for entry_text in articles.find():
     #some articles don't have titles
     #ignore errors even if the printed title string isn't proper UTF-8 or has broken marker bytes
-    title =  entry.get('entryTitle', 'no entry title found').encode('utf-8', 'ignore')
-    body = get_article_body(entry)
+    title =  entry_text.get('entryTitle', 'no entry title found').encode('utf-8', 'ignore')
+    body = get_article_body(entry_text)
     blob = TextBlob(body)
-
-    #if there's no body in the article, the loop continues 
-    if not body:
-        continue
 
     polarity_of_each_sentence = [sentence.sentiment.polarity for sentence in blob.sentences]
 
