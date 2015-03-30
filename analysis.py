@@ -25,9 +25,8 @@ def get_article_body(article):
 
 for entry in articles.find():
     #some articles don't have titles
-    title =  entry.get('entryTitle', 'no entry title found')
     #ignore errors even if the printed title string isn't proper UTF-8 or has broken marker bytes
-    sanitize = title.encode('utf-8', 'ignore')
+    title =  entry.get('entryTitle', 'no entry title found').encode('utf-8', 'ignore')
     body = get_article_body(entry)
     blob = TextBlob(body)
 
@@ -41,8 +40,8 @@ for entry in articles.find():
     average_polarity *= 100
 
     if average_polarity > 0:
-        print sanitize, ': positive ({0}% sure) '.format(abs(average_polarity))
+        print title, ': positive ({0}% sure) '.format(abs(average_polarity))
     elif average_polarity < 0:
-        print sanitize, ': negative ({0}% sure)'.format(abs(average_polarity))
+        print title, ': negative ({0}% sure)'.format(abs(average_polarity))
     else: 
-        print sanitize, ": Can't tell"
+        print title, ": Can't tell"
