@@ -17,7 +17,7 @@ def get_article_body(article):
         if len(keys) > 0 and 'entry' in keys[0]:
             entry = text[keys[0]]
             entry_text = entry.get('entrytext', 'this does not exist')
-            #strip html from entry
+        #strip html from entry
         return strip_html(entry_text)
     return ''
 
@@ -26,9 +26,9 @@ for entry_text in articles.find():
     #ignore errors even if the printed title string isn't proper UTF-8 or has broken marker bytes
     #strip html from title
     title =  strip_html(entry_text.get('entryTitle', 'no entry title found')).encode('UTF-8', 'ignore')
-
     blob = TextBlob(get_article_body(entry_text))
 
+    #ensure that blob has sentences
     if len(blob.sentences) > 0:
         polarity_of_each_sentence = [sentence.sentiment.polarity for sentence in blob.sentences]
 
