@@ -2,7 +2,7 @@ from pymongo import MongoClient
 from bs4 import BeautifulSoup
 from textblob import TextBlob
 
-client = MongoClient('mongo01.qa.nymetro.com', 27017)
+client = MongoClient('mongo01.qa.nymetro.com', 27017, slaveOK=True)
 db = client.articles
 articles = db.articles
 
@@ -10,21 +10,22 @@ def strip_html(html):
     return ''.join(BeautifulSoup(html).findAll(text=True))
 
 def get_article_body(article):
-    #body is an array and entrytext exists within it
+    #grab all
     for text in article.get('body') or []:
         keys = text.keys()
         if len(keys) > 0 and 'entry' in keys[0]:
             entry = text[keys[0]]
             entry_text = entry.get('entrytext')
-        return strip_html(entry_text)
+            if entry_text:
+                strip_html(entry_text)
+        return entry_text
     return ''
 
 for entry_text in articles.find():
     #some articles don't have titles
     #ignore errors even if the printed title string isn't proper UTF-8 or has broken marker bytes
     title =  entry_text.get('entryTitle', 'no entry title found').encode('utf-8', 'ignore')
-    body = get_article_body(entry_text)
-    blob = TextBlob(body)
+    blob = TextBlob(get_article_body(entry_text))
 
     polarity_of_each_sentence = [sentence.sentiment.polarity for sentence in blob.sentences]
 
