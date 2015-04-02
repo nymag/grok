@@ -11,12 +11,12 @@ def strip_html(html):
 
 def get_article_body(article):
     #grab all entry fields from article body 
+    entry_text = ''
     for text in article.get('body') or []:
         keys = text.keys()
         if len(keys) > 0 and 'entry' in keys[0]:
             entry = text[keys[0]]
-            entry_grab = entry.get('entrytext') 
-            entry_text = filter(None, entry_grab)
+            entry_text = entry.get('entrytext', 'this does not exist')
             #strip html from entry
         return strip_html(entry_text)
     return ''
@@ -26,6 +26,7 @@ for entry_text in articles.find():
     #ignore errors even if the printed title string isn't proper UTF-8 or has broken marker bytes
     #strip html from title
     title =  strip_html(entry_text.get('entryTitle', 'no entry title found')).encode('UTF-8', 'ignore')
+
     blob = TextBlob(get_article_body(entry_text))
 
     if len(blob.sentences) > 0:
