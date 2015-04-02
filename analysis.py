@@ -15,7 +15,9 @@ def get_article_body(article):
         keys = text.keys()
         if len(keys) > 0 and 'entry' in keys[0]:
             entry = text[keys[0]]
-            entry_text = entry.get('entrytext', 'no entrytext found')
+            entry_text = entry.get('entrytext') 
+            if entry_text is None:
+                print "WHYYYYYYY"
             #strip html from entry
         return strip_html(entry_text)
     return ''
