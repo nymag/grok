@@ -16,6 +16,9 @@ def get_article_body(article):
         keys = text.keys()
         if len(keys) > 0 and 'entry' in keys[0]:
             entry = text[keys[0]]
+            #unicode handling  
+            if isinstance(entry, basestring):
+                return entry 
             entry_text = entry.get('entrytext', 'this does not exist')
         #strip html from entry
         return strip_html(entry_text)
