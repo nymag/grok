@@ -6,19 +6,21 @@ client = MongoClient('mongo01.qa.nymetro.com', 27017, slaveOK=True)
 db = client.articles
 articles = db.articles
 
+
 def strip_html(html):
     return ''.join(BeautifulSoup(html).findAll(text=True))
 
+
 def get_article_body(article):
-    #grab all entry fields from article body 
+    #grab all entry fields from article body
     entry_text = ''
-    for text in article.get('body') or []:
+    for text in article.get('body', []):
         keys = text.keys()
         if len(keys) > 0 and 'entry' in keys[0]:
             entry = text[keys[0]]
-            #unicode handling  
+            #unicode handling
             if isinstance(entry, basestring):
-                return entry 
+                return entry
             entry_text = entry.get('entrytext', 'this does not exist')
         #strip html from entry
         return strip_html(entry_text)
@@ -28,7 +30,7 @@ for entry_text in articles.find():
     #some articles don't have titles
     #ignore errors even if the printed title string isn't proper UTF-8 or has broken marker bytes
     #strip html from title
-    title =  strip_html(entry_text.get('entryTitle', 'no entry title found')).encode('UTF-8', 'ignore')
+    title = strip_html(entry_text.get('entryTitle', 'no entry title found')).encode('UTF-8', 'ignore')
     blob = TextBlob(get_article_body(entry_text))
 
     #ensure that blob has sentences
@@ -42,5 +44,5 @@ for entry_text in articles.find():
         print title, ': positive ({0}% sure) '.format(abs(average_polarity))
     elif average_polarity < 0:
         print title, ': negative ({0}% sure)'.format(abs(average_polarity))
-    else: 
+    else:
         print title, ": Can't tell"

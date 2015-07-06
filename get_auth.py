@@ -9,22 +9,23 @@ CLIENT_SECRETS = 'client_secrets.json'
 
 # the Flow object to be used if we need to authenticate.
 FLOW = flow_from_clientsecrets(CLIENT_SECRETS,
-    scope='https://www.googleapis.com/auth/analytics.readonly',
-    message='%s is missing' % CLIENT_SECRETS
-    )
+  scope='https://www.googleapis.com/auth/analytics.readonly',
+  message='%s is missing' % CLIENT_SECRETS
+)
 
 # a file to store the access token
 TOKEN_FILE_NAME = 'token.dat'
 
+
 def prepare_credentials():
-  # tetrieve existing credendials
-  storage = Storage(TOKEN_FILE_NAME)
-  credentials = storage.get()
+  # retrieve existing credendials
+    storage = Storage(TOKEN_FILE_NAME)
+    credentials = storage.get()
 
   # if existing credentials are invalid and Run Auth flow
   # the run method will store any new credentials
-  if credentials is None or credentials.invalid:
-    credentials = run(FLOW, storage) #run Auth Flow and store credentials
+if credentials is None or credentials.invalid:
+  credentials = run(FLOW, storage) #run Auth Flow and store credentials
 
   return credentials
 
