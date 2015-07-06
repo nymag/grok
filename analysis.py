@@ -1,10 +1,20 @@
 from pymongo import MongoClient
 from bs4 import BeautifulSoup
 from textblob import TextBlob
+import analytics
+from get_auth import initialize_service
+
 
 client = MongoClient('mongo01.qa.nymetro.com', 27017, slaveOK=True)
 db = client.articles
 articles = db.articles
+
+
+def get_google_analytics():
+    service = initialize_service()
+    profile_id = '54903727'
+    results = analytics.get_analytics(service, profile_id)
+    return results
 
 
 def strip_html(html):

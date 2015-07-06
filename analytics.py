@@ -8,9 +8,11 @@ def get_analytics(service, profile_id):
         ids=ids,
         start_date='yesterday',
         end_date='today',
-        dimensions='ga:pageTitle',
+        dimensions='ga:pageTitle,ga:pagePath,ga:hostname',
         metrics='ga:pageviews',
-        max_results=15
+        filters='ga:pagePath=~^/thecut|^/daily.*',
+        sort='-ga:pageTitle',
+        max_results=100
         ).execute()
     return data
 
