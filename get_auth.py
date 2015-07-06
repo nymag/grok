@@ -24,17 +24,18 @@ def prepare_credentials():
 
   # if existing credentials are invalid and Run Auth flow
   # the run method will store any new credentials
-if credentials is None or credentials.invalid:
-  credentials = run(FLOW, storage) #run Auth Flow and store credentials
+    if credentials is None or credentials.invalid:
+        credentials = run(FLOW, storage)  # run Auth Flow and store credentials
 
-  return credentials
+    return credentials
+
 
 def initialize_service():
-	# create an http object
-	http = httplib2.Http()
+    # create an http object
+    http = httplib2.Http()
 
-	credentials = prepare_credentials() # retrieve stored creds. if not found, run Auth Flow
-	http = credentials.authorize(http)  # authorize the http object
+    credentials = prepare_credentials()  # retrieve stored creds. if not found, run Auth Flow
+    http = credentials.authorize(http)  # authorize the http object
 
-	# build the Analytics Service Object with the authorized http object
-	return build('analytics', 'v3', http=http)
+    # build the Analytics Service Object with the authorized http object
+    return build('analytics', 'v3', http=http)
