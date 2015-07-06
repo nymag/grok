@@ -44,5 +44,5 @@ Grok requires OAuth credentials in order to run. See [here](https://developers.g
 # Running Grok
 
 ```
-python get_analytics.py
+python analytics.py
 ```
