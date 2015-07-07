@@ -16,6 +16,8 @@ def get_google_analytics():
     results = analytics.get_analytics(service, profile_id)
     return results
 
+print get_google_analytics()
+
 
 def strip_html(html):
     return ''.join(BeautifulSoup(html).findAll(text=True))

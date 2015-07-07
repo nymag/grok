@@ -11,9 +11,9 @@ def get_analytics(service, profile_id):
         dimensions='ga:pageTitle,ga:pagePath,ga:hostname',
         metrics='ga:pageviews',
         # only return articles from thecut and daily on nymag host
-        filters='ga:hostname==nymag.com,ga:pagePath=~^/thecut|^/daily.*',
+        filters='ga:hostname==nymag.com;ga:pagePath=~^/thecut|^/daily.*',
         sort='-ga:pageTitle',
-        max_results=100
+        max_results=100,
         ).execute()
     return data
 
