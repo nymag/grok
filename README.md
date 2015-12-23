@@ -13,7 +13,7 @@ First ensure that Python 2.7.9 or later is installed. Then install the following
 [BeautifulSoup](http://www.crummy.com/software/BeautifulSoup/)
 
 ```
-pip install BeautifulSoup
+pip install BeautifulSoup4
 ```
 
 [PyMongo](https://api.mongodb.org/python/current/)
@@ -44,5 +44,5 @@ Grok requires OAuth credentials in order to run. See [here](https://developers.g
 # Running Grok
 
 ```
-python get_analytics.py
+python analytics.py
 ```

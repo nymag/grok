@@ -5,22 +5,20 @@ import analytics
 from get_auth import initialize_service
 
 
-client = MongoClient('mongo01.qa.nymetro.com', 27017, slaveOK=True)
+client = MongoClient('mongo01.prd.nymetro.com', 27017)
 db = client.articles
 articles = db.articles
 
 
 def get_google_analytics():
     service = initialize_service()
-    profile_id = '54903727'
+    profile_id = '107545746'
     results = analytics.get_analytics(service, profile_id)
     return results
 
-print get_google_analytics()
-
 
 def strip_html(html):
-    return ''.join(BeautifulSoup(html).findAll(text=True))
+    return ''.join(BeautifulSoup(html, 'html.parser').findAll(text=True))
 
 
 def get_article_body(article):
@@ -43,6 +41,8 @@ for entry_text in articles.find():
     #ignore errors even if the printed title string isn't proper UTF-8 or has broken marker bytes
     #strip html from title
     title = strip_html(entry_text.get('entryTitle', 'no entry title found')).encode('UTF-8', 'ignore')
+    url = entry_text.get('canonicalUrl', 'no url found')
+    regex = 'http://www.vulture.com/2015/12/'
     blob = TextBlob(get_article_body(entry_text))
 
     #ensure that blob has sentences
@@ -52,9 +52,5 @@ for entry_text in articles.find():
         average_polarity = sum(polarity_of_each_sentence) / len(blob.sentences)
         average_polarity *= 100
 
-    if average_polarity > 0:
-        print title, ': positive ({0}% sure) '.format(abs(average_polarity))
-    elif average_polarity < 0:
-        print title, ': negative ({0}% sure)'.format(abs(average_polarity))
-    else:
-        print title, ": Can't tell"
+    if average_polarity > 0 and url.startswith(regex):
+        print url, title, ': positive ({0}% sure) '.format(abs(average_polarity))
