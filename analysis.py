@@ -1,20 +1,4 @@
-from pymongo import MongoClient
 from bs4 import BeautifulSoup
-from textblob import TextBlob
-import analytics
-from get_auth import initialize_service
-
-
-client = MongoClient('mongo01.prd.nymetro.com', 27017)
-db = client.articles
-articles = db.articles
-
-
-def get_google_analytics():
-    service = initialize_service()
-    profile_id = '107545746'
-    results = analytics.get_analytics(service, profile_id)
-    return results
 
 
 def strip_html(html):
@@ -31,18 +15,18 @@ def get_article_body(article):
             #unicode handling
             if isinstance(entry, basestring):
                 return entry
-            entry_text = entry.get('entrytext', 'this does not exist')
+            entry_text = entry.get('entrytext', 'no entrytext found')
         #strip html from entry
         return strip_html(entry_text)
     return ''
 
-for entry_text in articles.find():
+''' for entry_text in articles.find():
     #some articles don't have titles
     #ignore errors even if the printed title string isn't proper UTF-8 or has broken marker bytes
     #strip html from title
-    title = strip_html(entry_text.get('entryTitle', 'no entry title found')).encode('UTF-8', 'ignore')
+    title = strip_html(entry_text.get('entryTitle', 'no entryTitle found')).encode('UTF-8', 'ignore')
     url = entry_text.get('canonicalUrl', 'no url found')
-    regex = 'http://www.vulture.com/2015/12/'
+    vulture_url = 'http://www.vulture.com/2015/12/'
     blob = TextBlob(get_article_body(entry_text))
 
     #ensure that blob has sentences
@@ -52,5 +36,7 @@ for entry_text in articles.find():
         average_polarity = sum(polarity_of_each_sentence) / len(blob.sentences)
         average_polarity *= 100
 
-    if average_polarity > 0 and url.startswith(regex):
+    if average_polarity > 0 and url.startswith(vultureUrl):
         print url, title, ': positive ({0}% sure) '.format(abs(average_polarity))
+    elif average_polarity < 0 and url.startswith(vultureUrl):
+        print url, title, ': negative ({0}% sure)'.format(abs(average_polarity)) '''
