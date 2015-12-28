@@ -5,6 +5,9 @@ client_secrets.json
 # Misc
 .DS_Store
 
+# Virtualenv 
+/grok
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
