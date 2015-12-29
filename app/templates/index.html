@@ -1,5 +1,6 @@
 {{ article_count }}
 
 {% for item in items %}
-  <p> {{ item.body }} </p>
+	<h2><a target="_blank" href="{{item.canonicalUrl | safe}}">{{ item.entryTitle | safe}}</a></h2>
+	<p> {{ item.body | safe }} </p>
 {% endfor %}
