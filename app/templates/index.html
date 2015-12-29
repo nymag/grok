@@ -1,5 +1,5 @@
+{{ article_count }}
 
-
-
-{{ articles }}<br>
-{{ entry_text }}
+{% for item in items %}
+  <p> {{ item.body }} </p>
+{% endfor %}
