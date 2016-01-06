@@ -1,6 +1,7 @@
 {{ article_count }}
 
-{% for item in items %}
-	<h2><a target="_blank" href="{{item.canonicalUrl | safe}}">{{ item.entryTitle | safe}}</a></h2>
-	<p> {{ item.body | safe }} </p>
+{{ entry_text }}
+
+{% for entry_text in entries %}
+	<p> {{ entry_text | safe }} </p>
 {% endfor %}
