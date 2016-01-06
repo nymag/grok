@@ -50,8 +50,8 @@ def get_results(service, profile_id):
     """Queries Google Analytics views
 
     Args:
-      service: Service that communicates to the Google API
-      profile_id: string The id of the profile view
+      service: Service object built by the Google API Python client library
+      profile_id: string The ID of the profile view
 
     Returns:
       Query results
@@ -64,8 +64,7 @@ def get_results(service, profile_id):
         end_date='today',
         metrics='ga:pageviews',
         dimensions='ga:pageTitle,ga:pagePath',
-        filters='ga:pagePath=~^/2015/12/[\w-]+.html$',
-        max_results='100').execute()
+        filters='ga:pagePath=~^/2015/12/[\w-]+.html$').execute()
 
 
 def print_results(results):
@@ -87,6 +86,7 @@ def main():
     # Vulture's profile ID
     profile_id = '107545746'
     print_results(get_results(service, profile_id))
+
 
 if __name__ == '__main__':
     main()

@@ -1,0 +1,7 @@
+{{ article_count }}
+
+{{ entry_text }}
+
+{% for entry_text in entries %}
+	<p> {{ entry_text | safe }} </p>
+{% endfor %}
