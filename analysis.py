@@ -12,3 +12,8 @@ def get_article_entry(item):
             text = entry[keys[0]]
             entry_text = text.get('entrytext', 'no entrytext found')
             return strip_html(entry_text)
+
+
+def get_article_title(item):
+    entry_title = item.get('entryTitle', [])
+    return strip_html(entry_title)

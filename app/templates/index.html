@@ -2,8 +2,8 @@ Total articles: {{ article_count }}
 
 Articles Showing: {{ max_num }}
 
-{% for blob in results %}
-	<p> {{ blob | safe }} </p>
+{% for body in result %}
+	<p> {{ body | safe }} </p>
 {% endfor %}
 
 
