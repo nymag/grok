@@ -15,5 +15,5 @@ def get_article_entry(item):
 
 
 def get_article_title(item):
-    entry_title = item.get('entryTitle', [])
+    entry_title = item.get('shorterHeadline', [])
     return strip_html(entry_title)

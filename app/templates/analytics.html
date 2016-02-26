@@ -1,0 +1,6 @@
+Total articles: {{ article_count }}
+
+{% for item in result %}
+	<p> {{ item | safe }} </p>
+{% endfor %}
+
