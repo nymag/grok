@@ -1,7 +1,9 @@
-{{ article_count }}
+Total articles: {{ article_count }}
 
-{{ entry_text }}
+Articles Showing: {{ max_num }}
 
-{% for entry_text in entries %}
-	<p> {{ entry_text | safe }} </p>
+{% for blob in results %}
+	<p> {{ blob | safe }} </p>
 {% endfor %}
+
+
