@@ -19,5 +19,5 @@ Grok requires OAuth credentials in order to generate Google Analytics data. See 
 # Running Grok
 
 ```
-python manage.py runserver
+python3 manage.py runserver
 ```
