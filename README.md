@@ -1,6 +1,4 @@
-# grok
-
-Welcome to NYmag's first dose of data analytics!
+# Introduction
 
 Grok /ˈɡrɒk/ is a term that roughly means "to understand profoundly/have knowledge of". It was coined by Robert Heinlein in his science-fiction novel *Stranger in a Strange Land*.
 
@@ -8,41 +6,18 @@ Grok uses sentiment analysis techniques to characterize the sentiment of text un
 
 # Installation
 
-First ensure that Python 2.7.9 or later is installed. Then install the following libraries using pip:
-
-[BeautifulSoup](http://www.crummy.com/software/BeautifulSoup/)
+First ensure that Python 3.0 or later is installed. Build the required docs in your local env, from the project directory:
 
 ```
-pip install BeautifulSoup4
-```
-
-[PyMongo](https://api.mongodb.org/python/current/)
-
-```
-pip install pymongo
-```
-
-[TextBlob](http://textblob.readthedocs.org/en/dev/)
-
-```
-pip install -U textblob
-```
-```
-python -m textblob.download_corpora
-```
-
-[Httplib2](https://github.com/jcgregorio/httplib2)
-
-```
-pip install httplib2
+pip3 install -r requirements.txt
 ```
 
 # Generate OAuth Credentials
 
-Grok requires OAuth credentials in order to run. See [here](https://developers.google.com/api-client-library/python/guide/aaa_client_secrets) about generating a client_secrets.json file.
+Grok requires OAuth credentials in order to generate Google Analytics data. See [here](https://developers.google.com/api-client-library/python/guide/aaa_client_secrets) about generating a client_secrets.json file.
 
 # Running Grok
 
 ```
-python analytics.py
+python manage.py runserver
 ```

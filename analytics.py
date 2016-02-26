@@ -60,33 +60,8 @@ def get_results(service, profile_id):
       # for the number of pageviews in the past month.
     return service.data().ga().get(
         ids='ga:' + profile_id,
-        start_date='30daysAgo',
-        end_date='today',
+        start_date='2016-01-01',
+        end_date='2016-02-01',
         metrics='ga:pageviews',
-        dimensions='ga:pageTitle,ga:pagePath',
-        filters='ga:pagePath=~^/2015/12/[\w-]+.html$').execute()
-
-
-def print_results(results):
-    # Print data nicely for the user.
-    if results:
-        print 'Vulture articles and corresponding pageviews: %s' % results.get('rows')
-    #print 'Total Sessions: %s' % results.get('rows')
-
-    else:
-        print 'No results found'
-
-
-def main():
-    # Define the auth scopes to request.
-    scope = ['https://www.googleapis.com/auth/analytics.readonly']
-
-    # Authenticate and construct service.
-    service = get_service('analytics', 'v3', scope, 'client_secrets.json')
-    # Vulture's profile ID
-    profile_id = '107545746'
-    print_results(get_results(service, profile_id))
-
-
-if __name__ == '__main__':
-    main()
+        dimensions='ga:pageTitle',
+        filters='ga:pagePath=~^/2016/.*/[\w-]+.html$').execute()
