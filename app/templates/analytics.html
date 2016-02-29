@@ -1,5 +1,6 @@
-Total articles: {{ article_count }}
+Total articles: {{ analytics_article_count }}
 
-{% for item in result %}
-    <p> {{ item | safe }} </p>
+
+{% for title, pageviews in analytics_result.items() %}
+    <p>{{ title }} : {{ pageviews }} </p>
 {% endfor %}

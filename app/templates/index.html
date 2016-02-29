@@ -1,7 +1,3 @@
-Total articles: {{ article_count }}
-
-Showing {{ max_num }} most recent articles
-
-{% for body in result %}
-    <p> {{ body | safe }} </p>
+{% for key, value in result.items() %}
+    <p>{{ key }} : {{ value }} </p>
 {% endfor %}
