@@ -6,10 +6,13 @@ Grok uses sentiment analysis techniques to characterize the sentiment of text un
 
 # Installation
 
-First ensure that Python 3.0 or later is installed. Build the required docs in your local env, from the project directory:
+First ensure that Python 3.0 or later is installed. Build the required docs in your local (virtual!) env, from the project directory:
 
 ```
+virtualenv -p python3 envname
+source envname/bin/activate
 pip3 install -r requirements.txt
+
 ```
 
 # Generate OAuth Credentials
