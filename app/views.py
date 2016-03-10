@@ -53,8 +53,8 @@ def positive_sentiment_graph():
     vals = plt.get_yticks()
     plt.yaxis.set_major_formatter(
         FuncFormatter(lambda y, pos: ('{0:.2f}'.format(y*1)).rstrip('0').rstrip('.')+'%'))
-    plt.set_ylim(ymin=1)
-    plt.set_xlim(xmin=0)
+    plt.set_ylim(ymin=1, ymax=1000)
+    plt.set_xlim(xmin=0, xmax=100)
     plt.set_xlabel('Pageviews', fontsize=14)
     plt.set_ylabel('Positive Sentiment', fontsize=14)
     fig.suptitle('New York Magazine: January 2016 Articles', fontsize=18)
