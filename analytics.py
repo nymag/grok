@@ -61,7 +61,8 @@ def get_results(service, profile_id):
     return service.data().ga().get(
         ids='ga:' + profile_id,
         start_date='2016-01-01',
-        end_date='2016-02-01',
+        end_date='2016-01-02',
+        max_results=100,
         metrics='ga:pageviews',
         dimensions='ga:pageTitle',
         filters='ga:pagePath=~^/2016/.*/[\w-]+.html$').execute()
