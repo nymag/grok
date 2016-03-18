@@ -2,15 +2,17 @@ from app import app
 from flask import render_template, make_response
 from pymongo import MongoClient
 from textblob import TextBlob
+import numpy as np
+from io import BytesIO
+from datetime import datetime
+
 from analysis import get_article_entry, get_article_title
 from analytics import get_service, get_results
-from datetime import datetime
+
 from matplotlib.backends.backend_agg import FigureCanvasAgg as FigureCanvas
 from matplotlib.figure import Figure
 import matplotlib.pyplot as plt
-from matplotlib.ticker import FuncFormatter
-import numpy as np
-from io import BytesIO
+
 
 client = MongoClient('mongo01.prd.nymetro.com', 27017)
 db = client.articles
