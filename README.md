@@ -11,7 +11,14 @@ First ensure that Python 3.0 or later is installed. Build the required docs in y
 ```
 virtualenv -p python3 envname
 source envname/bin/activate
-pip3 install -r requirements.txt
+pip install -r requirements.txt
+
+```
+
+Since Matplotlib is being used to plot the graphs, a backend must be specified:
+
+```
+echo "backend: TkAgg" >> ~/.matplotlib/matplotlibrc
 
 ```
 
@@ -22,5 +29,8 @@ Grok requires OAuth credentials in order to generate Google Analytics data. See 
 # Running Grok
 
 ```
-python3 manage.py runserver
+python manage.py runserver
+
 ```
+
+
