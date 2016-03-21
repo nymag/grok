@@ -12,6 +12,7 @@ from analytics import get_service, get_results
 from matplotlib.backends.backend_agg import FigureCanvasAgg as FigureCanvas
 from matplotlib.figure import Figure
 import matplotlib.pyplot as plt
+from matplotlib.ticker import FuncFormatter
 
 
 client = MongoClient('mongo01.prd.nymetro.com', 27017)
@@ -37,8 +38,13 @@ def sentiment():
 
     return render_template('index.html', result=result)
 
+# Serves graph page
+@app.route("/articles/sentiment")
+def positive_sentiment_page():
+    return render_template('images.html')
 
-@app.route("/articles/sentiment.png")
+# Serves graph image
+@app.route("/graphs/sentiment")
 def positive_sentiment_graph():
     sentiment()
     # Create a new dict with items that have two values for xaxis and yaxis data points
@@ -55,8 +61,8 @@ def positive_sentiment_graph():
     vals = plt.get_yticks()
     plt.yaxis.set_major_formatter(
         FuncFormatter(lambda y, pos: ('{0:.2f}'.format(y*1)).rstrip('0').rstrip('.')+'%'))
-    plt.set_ylim(ymin=1, ymax=1000)
-    plt.set_xlim(xmin=0, xmax=100)
+    plt.set_ylim(ymin=0, ymax=100)
+    plt.set_xlim(xmin=0, xmax=10000)
     plt.set_xlabel('Pageviews', fontsize=14)
     plt.set_ylabel('Positive Sentiment', fontsize=14)
     fig.suptitle('New York Magazine: January 2016 Articles', fontsize=18)
