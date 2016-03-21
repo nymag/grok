@@ -6,7 +6,7 @@ import numpy as np
 from io import BytesIO
 from datetime import datetime
 
-from analysis import get_article_entry, get_article_title
+from analysis import get_article_date, get_article_title
 from analytics import get_service, get_results
 
 from matplotlib.backends.backend_agg import FigureCanvasAgg as FigureCanvas
@@ -35,37 +35,32 @@ def sentiment():
     for d in sentiment_result, analytics_result:
         for k, v in d.items():
             result.setdefault(k, []).append(v)
+    print(result)
 
     return render_template('index.html', result=result)
 
-# Serves graph page
-@app.route("/articles/sentiment")
-def positive_sentiment_page():
-    return render_template('images.html')
 
-# Serves graph image
-@app.route("/graphs/sentiment")
+@app.route("/articles/duration.png")
 def positive_sentiment_graph():
     sentiment()
     # Create a new dict with items that have two values for xaxis and yaxis data points
     items = {k: v for k, v in result.items() if len(v) == 2}
-    fig = Figure((10, 10))
+    fig = Figure((40, 30))
     plt = fig.add_subplot(1, 1, 1)
     # Generate data points from xaxis and yaxis values
-    x = [item[1] for item in items.values()]
-    y = [item[0] for item in items.values()]
+    x = [item[0] for item in items.values()]
+    y = [item[1] for item in items.values()]
     N = len(x)
     colors = np.random.rand(N)
-    area = np.pi * (15 * np.random.rand(N))**2
-    plt.scatter(x, y, s=area, c=colors, alpha=0.5)
+    area = np.pi * (15)**2
+    plt.scatter(x, y, s=area, alpha=0.5)
     vals = plt.get_yticks()
-    plt.yaxis.set_major_formatter(
-        FuncFormatter(lambda y, pos: ('{0:.2f}'.format(y*1)).rstrip('0').rstrip('.')+'%'))
-    plt.set_ylim(ymin=0, ymax=100)
-    plt.set_xlim(xmin=0, xmax=10000)
-    plt.set_xlabel('Pageviews', fontsize=14)
-    plt.set_ylabel('Positive Sentiment', fontsize=14)
-    fig.suptitle('New York Magazine: January 2016 Articles', fontsize=18)
+    plt.set_ylim(ymin=1, ymax=10000)
+    plt.set_xlim(xmin=0, xmax=31)
+    plt.tick_params(axis='both', labelsize=20)
+    plt.set_xlabel('Publish Date (Day)', fontsize=25)
+    plt.set_ylabel('Pageviews', fontsize=25)
+    fig.suptitle('New York Magazine: January 2016 \n Total Articles: {0}'.format(len(items)), fontsize=30)
     canvas = FigureCanvas(fig)
     png_output = BytesIO()
     canvas.print_png(png_output)
@@ -93,32 +88,17 @@ def analytics():
     return render_template('analytics.html', analytics_result=analytics_result, analytics_article_count=analytics_article_count)
 
 
-@app.route('/articles/sentiment')
+@app.route('/articles/query')
 def index():
     # Adjust date based on analytics timeframe so count matches
-    start = datetime(2016, 1, 1)
-    end = datetime(2016, 2, 1)
-    query = {'status': 'published', 'blogName': 'Vulture', 'publishDate': {'$gte': start, '$lt': end}}
-    entry_query = {'body.entry': 1, 'shorterHeadline': 1}
+    query = {'status': 'published', 'blogName': 'Vulture'}
+    entry_query = {'body.entry': 1, 'shorterHeadline': 1, 'publishDate': 1}
     # Adjust limit based on analytics limit so count matches
-    limit = 1062
+    limit = 5000
     article_entries = articles.find(query, entry_query).limit(limit)
     article_count = articles.find(query).count()
-    items = [[get_article_entry(item), get_article_title(item)] for item in article_entries]
-    for body, title in items:
-        body = TextBlob(body)
-
-        if len(body.sentences) > 0:
-            polarity_of_each_sentence = [sentence.sentiment.polarity for sentence in body.sentences]
-
-            average_polarity = sum(polarity_of_each_sentence) / len(body.sentences)
-            average_polarity *= 100
-
-        if average_polarity > 0:
-            sentiment = '{}'.format(abs(round(average_polarity, 0)))
-        #elif average_polarity < 0:
-            #sentiment = 'negative ({}% sure)'.format(abs(round(average_polarity, 0)))
-
-            sentiment_result.update({title: sentiment})
+    items = [[get_article_date(item), get_article_title(item)] for item in article_entries]
+    for date, title in items:
+        sentiment_result.update({title: date})
 
     return render_template('sentiment.html', sentiment_result=sentiment_result, article_count=article_count, limit=limit)
