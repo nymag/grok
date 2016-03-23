@@ -4,9 +4,8 @@ client_secrets.json
 
 # Misc
 .DS_Store
-
-# Virtualenv 
-/grok
+*.sublime-workspace
+*.sublime-project
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
