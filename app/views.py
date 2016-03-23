@@ -1,13 +1,13 @@
 from app import app
+from app.normalize import get_article_entry, get_article_title
+from app.analytics import get_service, get_results
+
 from flask import render_template, make_response
 from pymongo import MongoClient
 from textblob import TextBlob
 import numpy as np
 from io import BytesIO
 from datetime import datetime
-
-from analysis import get_article_entry, get_article_title
-from analytics import get_service, get_results
 
 from matplotlib.backends.backend_agg import FigureCanvasAgg as FigureCanvas
 from matplotlib.figure import Figure
