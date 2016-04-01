@@ -11,18 +11,17 @@ from datetime import datetime
 
 from matplotlib.backends.backend_agg import FigureCanvasAgg as FigureCanvas
 from matplotlib.figure import Figure
-import matplotlib.pyplot as plt
 
 
 client = MongoClient('mongo01.prd.nymetro.com', 27017)
 db = client.articles
 articles = db.articles
 
-#Articles with google analytics pageviews
+# Articles with google analytics pageviews
 analytics_result = {}
-#Articles expressing positive and/or negative sentiment
+# Articles expressing positive and/or negative sentiment
 sentiment_result = {}
-#Articles expressing positive and/or negative sentiment against pageviews
+# Articles expressing positive and/or negative sentiment against pageviews
 result = {}
 
 
@@ -41,25 +40,17 @@ def sentiment():
 @app.route("/articles/sentiment.png")
 def positive_sentiment_graph():
     sentiment()
-    # Create a new dict with items that have two values for xaxis and yaxis data points
-    items = {k: v for k, v in result.items() if len(v) == 2}
     fig = Figure((10, 10))
     plt = fig.add_subplot(1, 1, 1)
     # Generate data points from xaxis and yaxis values
-    x = [item[1] for item in items.values()]
-    y = [item[0] for item in items.values()]
-    N = len(x)
-    colors = np.random.rand(N)
-    area = np.pi * (15 * np.random.rand(N))**2
-    plt.scatter(x, y, s=area, c=colors, alpha=0.5)
-    vals = plt.get_yticks()
-    plt.yaxis.set_major_formatter(
-        FuncFormatter(lambda y, pos: ('{0:.2f}'.format(y*1)).rstrip('0').rstrip('.')+'%'))
-    plt.set_ylim(ymin=1, ymax=1000)
-    plt.set_xlim(xmin=0, xmax=100)
-    plt.set_xlabel('Pageviews', fontsize=14)
-    plt.set_ylabel('Positive Sentiment', fontsize=14)
-    fig.suptitle('New York Magazine: January 2016 Articles', fontsize=18)
+    x = [x for x in range(1, 32)]
+    y = [79090, 85547, 50725, 36583, 38723, 31446, 16048, 10950, 10266, 11789, 6428, 5788, 4946, 4035, 5001, 2957, 2712, 2237, 2617, 3189, 2810, 2824, 2439, 3054, 4356, 4022, 3427, 2779, 2798, 2877, 2332]
+    plt.plot(x, y)
+    plt.set_ylim(ymin=0, ymax=25000)
+    plt.set_xlim(xmin=0, xmax=31)
+    plt.set_xlabel('Days (August 5 - September 5)', fontsize=14)
+    plt.set_ylabel('Pageviews', fontsize=14)
+    fig.suptitle('Article: Why Straight Men Have Sex With Each Other', fontsize=18)
     canvas = FigureCanvas(fig)
     png_output = BytesIO()
     canvas.print_png(png_output)
